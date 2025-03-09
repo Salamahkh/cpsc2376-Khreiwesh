@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+
+void printVector(const std::vector<int>& vec);
+void doubleVector(std::vector<int>& vec);
+int calculateSum(const std::vector<int>& vec);
+void printMultiples(const std::vector<int>& vec, int num);
+
+int main() {
+    std::vector<int> numbers;
+    int choice = 0;
+
+    while (true) {
+        std::cout << "\nMenu:\n";
+        std::cout << "1. Add an item to the vector\n";
+        std::cout << "2. Print the vector\n";
+        std::cout << "3. Double the vector\n";
+        std::cout << "4. Find the sum of the vector\n";
+        std::cout << "5. Print multiples of a number\n";
+        std::cout << "6. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Please enter a number between 1 and 6.\n";
+            continue;
+        }
+
+        switch (choice) {
+            case 1: {
+                int num;
+                std::cout << "Enter a number to add to the vector: ";
+                std::cin >> num;
+                numbers.push_back(num);
+                break;
+            }
+            case 2:
+                printVector(numbers);
+                break;
+            case 3:
+                doubleVector(numbers);
+                std::cout << "The vector has been doubled.\n";
+                break;
+            case 4:
+                std::cout << "The sum of the vector is: " << calculateSum(numbers) << std::endl;
+                break;
+            case 5: {
+                int num;
+                std::cout << "Enter a number to print its multiples in the vector: ";
+                std::cin >> num;
+                printMultiples(numbers, num);
+                break;
+            }
+            case 6:
+                std::cout << "Exiting program.\n";
+                return 0;
+            default:
+                std::cout << "Invalid choice. Please select an option between 1 and 6.\n";
+        }
+    }
+
+    return 0;
+}
+
+void printVector(const std::vector<int>& vec) {
+    if (vec.empty()) {
+        std::cout << "The vector is empty.\n";
+    } else {
+        std::cout << "Vector elements: ";
+        for (const int& num : vec) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void doubleVector(std::vector<int>& vec) {
+    for (int& num : vec) {
+        num *= 2;
+    }
+}
+
+int calculateSum(const std::vector<int>& vec) {
+    int sum = 0;
+    for (const int& num : vec) {
+        sum += num;
+    }
+    return sum;
+}
+
+void printMultiples(const std::vector<int>& vec, int num) {
+    std::cout << "Multiples of " << num << " in the vector: ";
+    bool found = false;
+    for (const int& element : vec) {
+        if (element % num == 0) {
+            std::cout << element << " ";
+            found = true;
+        }
+    }
+    if (!found) {
+        std::cout << "No multiples found.\n";
+    }
+    std::cout << std::endl;
+}
