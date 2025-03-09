@@ -9,22 +9,20 @@ Practice 2
 #include <iomanip>
 #include <string>
 
-// Function to read the balance from the file
 double readBalanceFromFile(const std::string& filename) {
     std::ifstream inFile(filename);
-    double balance = 100.00;  // Default balance if file does not exist
+    double balance = 100.00;
 
     if (inFile.is_open()) {
         inFile >> balance;
     } else {
-        std::ofstream outFile(filename);  // Create file with default balance
+        std::ofstream outFile(filename);
         outFile << std::fixed << std::setprecision(2) << balance;
         outFile.close();
     }
     return balance;
 }
 
-// Function to write the balance to the file
 void writeBalanceToFile(const std::string& filename, double balance) {
     std::ofstream outFile(filename);
     if (outFile.is_open()) {
@@ -35,12 +33,10 @@ void writeBalanceToFile(const std::string& filename, double balance) {
     }
 }
 
-// Function to check the balance
 void checkBalance(double balance) {
     std::cout << "Your current balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
 }
 
-// Function to deposit money
 void deposit(double& balance) {
     double depositAmount;
     std::cout << "Enter deposit amount: ";
@@ -50,4 +46,60 @@ void deposit(double& balance) {
         balance += depositAmount;
         std::cout << "Deposit successful. Your new balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
     } else {
-        std
+        std::cerr << "Error: Deposit amount must be positive." << std::endl;
+    }
+}
+
+void withdraw(double& balance) {
+    double withdrawAmount;
+    std::cout << "Enter withdrawal amount: ";
+    std::cin >> withdrawAmount;
+
+    if (withdrawAmount <= 0) {
+        std::cerr << "Error: Withdrawal amount must be positive." << std::endl;
+    } else if (withdrawAmount > balance) {
+        std::cerr << "Error: Insufficient funds. Your balance is $" << std::fixed << std::setprecision(2) << balance << std::endl;
+    } else {
+        balance -= withdrawAmount;
+        std::cout << "Withdrawal successful. Your new balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
+    }
+}
+
+int main() {
+    const std::string filename = "account_balance.txt";
+    double balance = readBalanceFromFile(filename);
+
+    std::cout << "Welcome to Your Bank Account!" << std::endl;
+    std::cout << "Your current balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
+
+    while (true) {
+        std::cout << "\nMenu:" << std::endl;
+        std::cout << "1. Check Balance" << std::endl;
+        std::cout << "2. Deposit Money" << std::endl;
+        std::cout << "3. Withdraw Money" << std::endl;
+        std::cout << "4. Exit" << std::endl;
+
+        int choice;
+        std::cout << "\nEnter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                checkBalance(balance);
+                break;
+            case 2:
+                deposit(balance);
+                writeBalanceToFile(filename, balance);
+                break;
+            case 3:
+                withdraw(balance);
+                writeBalanceToFile(filename, balance);
+                break;
+            case 4:
+                std::cout << "Thank you for using our bank!" << std::endl;
+                return 0;
+            default:
+                std::cerr << "Invalid choice, please try again." << std::endl;
+        }
+    }
+}
