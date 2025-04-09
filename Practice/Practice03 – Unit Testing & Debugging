@@ -1,0 +1,30 @@
+#include <gtest/gtest.h>
+#include "practice03.cpp" // Include the buggy code header
+
+TEST(MathUtilsTest, SumRangeTest) {
+  EXPECT_EQ(MathUtils::sumRange(1, 5), 15);  // Normal case
+  EXPECT_EQ(MathUtils::sumRange(1, 1), 0);   // Edge case where start == end
+  EXPECT_EQ(MathUtils::sumRange(-5, -1), -15); // Negative values
+}
+
+TEST(MathUtilsTest, ContainsNegativeTest) {
+  std::vector<int> values = {3, -1, 5, 7};
+  EXPECT_TRUE(MathUtils::containsNegative(values));  // Contains negative value
+  
+  std::vector<int> values2 = {3, 5, 7};
+  EXPECT_FALSE(MathUtils::containsNegative(values2));  // No negative value
+  
+  std::vector<int> values3 = {};
+  EXPECT_FALSE(MathUtils::containsNegative(values3));  // Empty list
+}
+
+TEST(MathUtilsTest, FindMaxTest) {
+  std::vector<int> values = {3, -1, 5, 7};
+  EXPECT_EQ(MathUtils::findMax(values), 7);  // Normal case
+  
+  std::vector<int> values2 = {3, 3, 3};
+  EXPECT_EQ(MathUtils::findMax(values2), 3);  // All values equal
+  
+  std::vector<int> values3 = {};
+  EXPECT_EQ(MathUtils::findMax(values3), INT_MIN);  // Empty list case
+}
